@@ -19,7 +19,8 @@ var configDB = require('./config/database.js');
 const LocalStrategy = require('passport-local').Strategy;
 
 // configuration ===============================================================
-mongoose.connect(configDB.url); // connect to our database
+mongoose.connect("mongodb://localhost/mongoAuth"); // connect to our database
+var db = mongoose.connection; 
 
 require('./config/passport')(passport); // pass passport for configuration
 
@@ -42,8 +43,8 @@ app.use(bodyParser.text());
 app.use(bodyParser.json({ type: "application/vnd.api+json" }));
 
 // routes ======================================================================
-require('./app/routes.js')(app, passport); // load our routes and pass in our app and fully configured passport
-
+require('./models/routes.js')(app, passport); // load our routes and pass in our app and fully configured passport
+require('./config/passport')(passport);
 // launch ======================================================================
 app.listen(port);
 console.log('The magic happens on port ' + port);
